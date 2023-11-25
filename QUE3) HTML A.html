@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .calculator {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 0;
+            max-width: 300px;
+            margin: auto;
+        }
+
+        .display {
+            grid-column: span 3; /* Updated to span 3 columns */
+            height: 40px;
+            text-align: right;
+            background-color: white;
+            border: 1px solid #ccc;
+        }
+
+        .clear {
+            grid-column: span 1; /* AC button spans 1 column */
+            background-color: green;
+            color: white;
+            height: 43.5px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+        }
+
+        button {
+            height: 40px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: black;
+            color: white;
+            border: none;
+        }
+
+        .operation {
+            background-color: grey;
+            color: white;
+        }
+    </style>
+    <title>Calculator</title>
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" id="display" class="display" readonly>
+        <button class="clear" onclick="clearDisplay()">AC</button>
+        <button onclick="appendValue('7')">7</button>
+        <button onclick="appendValue('8')">8</button>
+        <button onclick="appendValue('9')">9</button>
+        <button class="operation" onclick="setOperation('+')">+</button>
+        <button onclick="appendValue('4')">4</button>
+        <button onclick="appendValue('5')">5</button>
+        <button onclick="appendValue('6')">6</button>
+        <button class="operation" onclick="setOperation('-')">-</button>
+        <button onclick="appendValue('1')">1</button>
+        <button onclick="appendValue('2')">2</button>
+        <button onclick="appendValue('3')">3</button>
+        <button class="operation" onclick="setOperation('/')">÷</button>
+        <button onclick="appendValue('.')">.</button>
+        <button onclick="appendValue('0')">0</button>
+        <button onclick="calculateResult()">=</button>
+        <button class="operation" onclick="setOperation('*')">*</button>
+    </div>
+    <script>
+        let currentValue = '';
+        let currentOperation = '';
+        let resultDisplayed = false;
+
+        function clearDisplay() {
+            document.getElementById('display').value = '';
+            currentValue = '';
+            currentOperation = '';
+            resultDisplayed = false;
+        }
+
+        function appendValue(value) {
+            if (resultDisplayed) {
+                clearDisplay();
+                resultDisplayed = false;
+            }
+            document.getElementById('display').value += value;
+            currentValue = document.getElementById('display').value;
+        }
+
+        function setOperation(operation) {
+            if (currentValue !== '') {
+                currentOperation = operation;
+                document.getElementById('display').value += operation;
+                resultDisplayed = false;
+            }
+        }
+
+       function calculateResult() {
+    if (currentValue !== '') {
+        let result = eval(currentValue);
+
+        // Handle cases where result is a decimal number
+        if (Number.isFinite(result)) {
+            // Display at most 10 digits after the decimal point
+            result = parseFloat(result.toFixed(10));
+        }
+
+        document.getElementById('display').value = result;
+        currentValue = result.toString();
+        resultDisplayed = true;
+    }
+}
+
+    </script>
+</body>
+</html>
